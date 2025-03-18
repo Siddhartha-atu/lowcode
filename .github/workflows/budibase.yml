@@ -20,4 +20,4 @@ jobs:
           node-version: 18
 
       - name: Deploy to Budibase Cloud (using npx)
-        run: npx @budibase/cli deploy --api-key ${{ secrets.BUDIBASE_API_KEY }}
+        run: npx @budibase/cli publish --api-key ${{ secrets.BUDIBASE_API_KEY }}

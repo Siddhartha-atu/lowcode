@@ -19,14 +19,8 @@ jobs:
         with:
           node-version: 18
 
-      - name: Install Budibase CLI
-        run: |
-          npm install -g @budibase/cli
-          echo "Checking Budibase version..."
-          budibase --version  # This ensures Budibase CLI is installed
-
       - name: Build Budibase App
-        run: budibase build --ci
+        run: npx @budibase/cli build --ci
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
@@ -48,4 +42,4 @@ jobs:
           path: ./dist
 
       - name: Deploy to Budibase Cloud
-        run: budibase deploy --api-key ${{ secrets.BUDIBASE_API_KEY }}
+        run: npx @budibase/cli deploy --api-key ${{ secrets.BUDIBASE_API_KEY }}

@@ -1,23 +1,29 @@
-name: Budibase CI/CD
+name: Deploy Budibase App
 
 on:
   push:
     branches:
-      - main  # Runs when you push to main
-  pull_request:
-    types: [closed]  # Runs when a PR is merged
+      - master   # Trigger the workflow when pushing to the master branch.
+  workflow_dispatch:   # Allows you to manually trigger the workflow.
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest   # Use the latest Ubuntu environment.
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v2  # Check out the repository's code.
 
-      - name: Set Up Node.js
-        uses: actions/setup-node@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
         with:
-          node-version: 18
+          node-version: '14'  # Use Node.js version 14 (or change it as per your project requirements).
 
-      - name: Deploy to Budibase Cloud (using npx)
-        run: npx @budibase/cli publish --api-key ${{ secrets.BUDIBASE_API_KEY }}
+      - name: Install dependencies
+        run: npm install  # Install your app's dependencies.
+
+      - name: Deploy to Budibase
+        run: |
+          npx @budibase/cli deploy --api-key ${{ secrets.BUDIBASE_API_KEY }}
+        env:
+          BUDIBASE_API_KEY: ${{ secrets.BUDIBASE_API_KEY }}  # API key stored securely in GitHub Secrets.
+

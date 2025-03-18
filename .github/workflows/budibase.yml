@@ -19,11 +19,5 @@ jobs:
         with:
           node-version: 18
 
-      - name: Install Budibase CLI
-        run: npm install -g @budibase/cli
-
-      - name: Verify Budibase CLI Installation
-        run: budibase --version
-
-      - name: Deploy to Budibase Cloud
-        run: budibase deploy --api-key ${{ secrets.BUDIBASE_API_KEY }}
+      - name: Deploy to Budibase Cloud (using npx)
+        run: npx @budibase/cli deploy --api-key ${{ secrets.BUDIBASE_API_KEY }}

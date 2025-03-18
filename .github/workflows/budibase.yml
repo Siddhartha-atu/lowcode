@@ -1,50 +1,33 @@
-name: Budibase CI/CD
+name: CI/CD Pipeline for Budibase Change Request
 
 on:
-  pull_request:
-    types: [closed]  # Triggers on PR merge
   push:
     branches:
-      - main  # Change this to match your branch
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
-      - name: Set Up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16' # Or the version required by your project
 
-      - name: Install Budibase CLI
-        run: npm install -g @budibase/cli
+    - name: Install dependencies
+      run: npm install
 
-      - name: Build Budibase App
-        run: |
-          budibase build --ci
+    - name: Run tests (if applicable)
+      run: npm test # Only if you have tests defined
 
-      - name: Upload Build Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: budibase-build
-          path: ./dist
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Download Build Artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: budibase-build
-          path: ./dist
-
-      - name: Deploy to Budibase Cloud
-        run: |
-          budibase deploy --api-key ${{ secrets.BUDIBASE_API_KEY }}
+    - name: Deploy to production (or staging)
+      run: |
+        # Add your deployment script here, e.g., deploy to a cloud service or Budibase server
+        echo "Deploying to production..."

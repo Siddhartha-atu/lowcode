@@ -1,17 +1,17 @@
 name: Budibase CI/CD
 
 on:
-  pull_request:
-    types: [closed]  # Triggers on PR merge
   push:
     branches:
-      - main  # Change this to match your branch
+      - main  # Runs when you push to main
+  pull_request:
+    types: [closed]  # Runs when a PR is merged
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
+      - name: Checkout Code
         uses: actions/checkout@v4
 
       - name: Set Up Node.js
@@ -20,11 +20,13 @@ jobs:
           node-version: 18
 
       - name: Install Budibase CLI
-        run: npm install -g @budibase/cli
+        run: |
+          npm install -g @budibase/cli
+          echo "Checking Budibase version..."
+          budibase --version  # This ensures Budibase CLI is installed
 
       - name: Build Budibase App
-        run: |
-          budibase build --ci
+        run: budibase build --ci
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
@@ -36,7 +38,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
+      - name: Checkout Code
         uses: actions/checkout@v4
 
       - name: Download Build Artifact
@@ -46,5 +48,4 @@ jobs:
           path: ./dist
 
       - name: Deploy to Budibase Cloud
-        run: |
-          budibase deploy --api-key ${{ secrets.BUDIBASE_API_KEY }}
+        run: budibase deploy --api-key ${{ secrets.BUDIBASE_API_KEY }}

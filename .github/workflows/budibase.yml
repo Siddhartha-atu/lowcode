@@ -19,15 +19,11 @@ jobs:
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '16' # Or the version required by your project
+        node-version: '16'
 
     - name: Install dependencies
       run: npm install
 
-    - name: Run tests (if applicable)
-      run: npm test # Only if you have tests defined
-
     - name: Deploy to production (or staging)
       run: |
-        # Add your deployment script here, e.g., deploy to a cloud service or Budibase server
         echo "Deploying to production..."

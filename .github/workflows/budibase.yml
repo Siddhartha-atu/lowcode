@@ -16,10 +16,12 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18  # Update to Node.js 18 or higher
+          node-version: 18  # Use Node.js 18 or higher
 
       - name: Install Budibase CLI
-        run: npm install -g @budibase/cli
+        run: |
+          npm install -g @budibase/cli
+          bbb --version  # Verify installation by checking the version
 
       - name: Deploy to Budibase
         env:

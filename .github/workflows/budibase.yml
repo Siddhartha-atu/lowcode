@@ -1,29 +1,30 @@
-name: CI/CD Pipeline for Budibase Change Request
+name: Deploy Budibase App
 
 on:
   push:
     branches:
-      - main
-  pull_request:
-    branches:
-      - main
+      - main  # Trigger the workflow on pushes to the main branch
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '16'
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16  # Budibase requires Node.js 16 or higher
 
-    - name: Install dependencies
-      run: npm install
+      - name: Install Budibase CLI
+        run: npm install -g @budibase/cli
 
-    - name: Deploy to production (or staging)
-      run: |
-        echo "Deploying to production..."
+      - name: Deploy to Budibase
+        env:
+          BUDIBASE_API_KEY: ${{ secrets.BUDIBASE_API_KEY }}  # Use the secret
+          BUDIBASE_APP_ID: ${{ secrets.BUDIBASE_APP_ID }}    # Use the secret
+        run: |
+          bbb auth --api-key $BUDIBASE_API_KEY
+          bbb apps publish --appId $BUDIBASE_APP_ID

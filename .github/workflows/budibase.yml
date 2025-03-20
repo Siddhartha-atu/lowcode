@@ -25,6 +25,7 @@ jobs:
 
       - name: Verify Budibase CLI installation
         run: |
+          echo "PATH: $PATH"  # Print the PATH to verify it includes the global NPM binaries
           bbb --version  # Verify installation by checking the version
 
       - name: Deploy to Budibase

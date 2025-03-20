@@ -18,13 +18,13 @@ jobs:
         with:
           node-version: 18  # Use Node.js 18 or higher
 
+      - name: Clear NPM cache
+        run: npm cache clean --force
+
       - name: Install Budibase CLI
         run: |
           npm install -g @budibase/cli
-          echo "$(npm bin -g)" >> $GITHUB_PATH  # Add global NPM binaries to PATH
-
-      - name: Verify Budibase CLI installation
-        run: |
+          echo "/usr/local/bin" >> $GITHUB_PATH  # Manually add the global NPM binaries path to PATH
           echo "PATH: $PATH"  # Print the PATH to verify it includes the global NPM binaries
           bbb --version  # Verify installation by checking the version
 

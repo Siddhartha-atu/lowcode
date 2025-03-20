@@ -21,7 +21,7 @@ jobs:
       - name: Install Budibase CLI
         run: |
           npm install -g @budibase/cli
-          echo "PATH=$(npm bin -g):$PATH" >> $GITHUB_ENV  # Add global NPM binaries to PATH
+          echo "$(npm bin -g)" >> $GITHUB_PATH  # Add global NPM binaries to PATH
 
       - name: Verify Budibase CLI installation
         run: |

@@ -24,7 +24,9 @@ jobs:
       - name: Install Budibase CLI
         run: |
           npm install -g @budibase/cli
-          echo "/opt/hostedtoolcache/node/18.20.7/x64/bin" >> $GITHUB_PATH  # Add the correct global NPM binaries path to PATH
+          echo "Global NPM binaries path: $(npm bin -g)"  # Print the global NPM binaries path
+          echo "Installed Budibase CLI location: $(which bbb || echo 'bbb not found')"  # Check if bbb is installed
+          echo "$(npm bin -g)" >> $GITHUB_PATH  # Add the correct global NPM binaries path to PATH
           echo "PATH: $PATH"  # Print the PATH to verify it includes the global NPM binaries
           bbb --version  # Verify installation by checking the version
 
